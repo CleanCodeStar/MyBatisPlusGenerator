@@ -8,6 +8,7 @@ import citrsw.core.definition.TableDefinition;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -19,25 +20,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 启动类
+ * 生成器类
  *
  * @author Zhenfeng Li
  * @version 1.0
  * @date 2020-09-22 9:31
  */
+@Slf4j
 public class Generator {
-    public static void main(String[] args) throws IOException{
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setSourceType("mysql").setSourceUrl("jdbc:mysql://192.168.66.102:3306/citrsw?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
-                .setSourceUser("root").setSourcePassword("cleancode").setSourceSchema("").setSourceDriver("com.mysql.cj.jdbc.Driver");
-        DataBase dataBase = DataBase.INSTANCE;
-        dataBase.createDataSourceConnect(dataSourceConfig);
-        //注册表
-        List<TableDefinition> tableDefinitions = dataBase.registerAllTable();
-        //注册表字段
-        tableDefinitions.parallelStream().forEach(dataBase::registerAllColumn);
 
-        //配置包名，包后缀名，输出路径
+    public static void main(String[] args) throws IOException {
+        //配置数据库
+        DataSourceConfig dataSourceConfig = new DataSourceConfig().setSourceType("mysql")
+                .setSourceSchema("").setSourceDriver("com.mysql.cj.jdbc.Driver")
+                .setSourceUrl("jdbc:mysql://192.168.66.102:3306/citrsw?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
+                .setSourceUser("root").setSourcePassword("cleancode");
+        //配置作者、版本号、需要替换的类文件前缀、包名，包后缀名，输出路径,自定义模板路径
         Config config = new Config()
                 .setAuthor("Zhenfeng Li")
                 .setVersion("1.0.0")
@@ -47,131 +45,153 @@ public class Generator {
                 .setServicePackage("cn.citrsw.service").setServiceOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                 .setServiceImplPackage("cn.citrsw.service.impl").setServiceImplOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                 .setMapperPackage("cn.citrsw.mapper").setMapperOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setMapperXmlOutPath("E:\\ideaProjects\\citrsw\\src\\main\\resources\\test\\mapper");
+                .setMapperXmlOutPath("E:\\ideaProjects\\citrsw\\src\\main\\resources\\test\\mapper")
+                //模板可进行自定义，不配置则使用默认
+                .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
+                .setControllerTemplatePath("D:\\Users\\15706\\Desktop\\template\\controller.ftl")
+                .setServiceTemplatePath("D:\\Users\\15706\\Desktop\\template\\service.ftl")
+                .setServiceImplTemplatePath("D:\\Users\\15706\\Desktop\\template\\serviceImpl.ftl")
+                .setMapperTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapper1.ftl")
+                .setMapperXmlTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapperXML.ftl");
+        //运行
+        //第一种：最全的配置方式
+        new Generator().execute(dataSourceConfig, config);
+        //第二种：最简单的配置方式，只配置数据库，其他均使用默认配置，该方式会将生成的文件输出到当前工程目录下
+        // new Generator().execute(dataSourceConfig);
+    }
 
+    /**
+     * 执行
+     */
+    public void execute(DataSourceConfig dataSourceConfig) throws IOException {
+        execute(dataSourceConfig, new Config());
+    }
+
+    /**
+     * 执行
+     */
+    public void execute(DataSourceConfig dataSourceConfig, Config config) throws IOException {
+        DataBase dataBase = DataBase.INSTANCE;
+        dataBase.createDataSourceConnect(dataSourceConfig);
+        //注册表
+        List<TableDefinition> tableDefinitions = dataBase.registerAllTable();
+        //注册表字段
+        tableDefinitions.parallelStream().forEach(dataBase::registerAllColumn);
+        log.info("======表注册完成======");
         //使用模版创建
         Configuration configuration = new Configuration(Configuration.getVersion());
         //配置模板所在目录
-        configuration.setDirectoryForTemplateLoading(new File("E:\\ideaProjects\\MyBatisPlusGenerator\\src\\main\\resources\\template"));
         configuration.setDefaultEncoding("utf-8");
         //配置具体模板文件
-        Template entityTemplate = configuration.getTemplate("entity.ftl");
-        Template controllerTemplate = configuration.getTemplate("controller.ftl");
-        Template serviceTemplate = configuration.getTemplate("service.ftl");
-        Template serviceImplTemplate = configuration.getTemplate("serviceImpl.ftl");
-        Template mapperTemplate = configuration.getTemplate("mapper.ftl");
-        Template mapperXmlTemplate = configuration.getTemplate("mapperXml.ftl");
-
+        Template entityTemplate;
+        if (StringUtils.isNotBlank(config.getEntityTemplatePath()) && new File(config.getEntityTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getEntityTemplatePath()).getParentFile());
+            entityTemplate = configuration.getTemplate(new File(config.getEntityTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            entityTemplate = configuration.getTemplate("entity.ftl");
+        }
+        Template controllerTemplate;
+        if (StringUtils.isNotBlank(config.getControllerTemplatePath()) && new File(config.getControllerTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getControllerTemplatePath()).getParentFile());
+            controllerTemplate = configuration.getTemplate(new File(config.getControllerTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            controllerTemplate = configuration.getTemplate("controller.ftl");
+        }
+        Template serviceTemplate;
+        if (StringUtils.isNotBlank(config.getServiceTemplatePath()) && new File(config.getServiceTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getServiceTemplatePath()).getParentFile());
+            serviceTemplate = configuration.getTemplate(new File(config.getServiceTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            serviceTemplate = configuration.getTemplate("service.ftl");
+        }
+        Template serviceImplTemplate;
+        if (StringUtils.isNotBlank(config.getServiceImplTemplatePath()) && new File(config.getServiceImplTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getServiceImplTemplatePath()).getParentFile());
+            serviceImplTemplate = configuration.getTemplate(new File(config.getServiceImplTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            serviceImplTemplate = configuration.getTemplate("serviceImpl.ftl");
+        }
+        Template mapperTemplate;
+        if (StringUtils.isNotBlank(config.getMapperTemplatePath()) && new File(config.getMapperTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getMapperTemplatePath()).getParentFile());
+            mapperTemplate = configuration.getTemplate(new File(config.getMapperTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            mapperTemplate = configuration.getTemplate("mapper.ftl");
+        }
+        Template mapperXmlTemplate;
+        if (StringUtils.isNotBlank(config.getMapperXmlTemplatePath()) && new File(config.getMapperXmlTemplatePath()).exists()) {
+            //使用指定额模板
+            configuration.setDirectoryForTemplateLoading(new File(config.getMapperXmlTemplatePath()).getParentFile());
+            mapperXmlTemplate = configuration.getTemplate(new File(config.getMapperXmlTemplatePath()).getName());
+        } else {
+            //未配置则使用默认的模板
+            configuration.setClassForTemplateLoading(this.getClass(), "/default");
+            mapperXmlTemplate = configuration.getTemplate("mapperXML.ftl");
+        }
+        log.info("======模板加载完成======");
         //循环创建 并发循环
-        tableDefinitions.parallelStream().forEach(entityDefinition -> {
+        tableDefinitions.parallelStream().forEach(tableDefinition -> {
             //替换前缀
             String replace = config.getReplace();
             if (StringUtils.isNotBlank(replace)) {
                 String[] split = replace.split(":");
-                String replaceFirst = entityDefinition.getJavaClassName(true).replaceFirst(split[0], split.length > 1 ? split[1] : "");
-                entityDefinition.setJavaName(CoreUtils.toUpperFirstCase(replaceFirst));
-                entityDefinition.setTableMappingName(CoreUtils.camelToUnderLine(entityDefinition.getObjectName()));
+                String replaceFirst = tableDefinition.getJavaClassName(true).replaceFirst(split[0], split.length > 1 ? split[1] : "");
+                tableDefinition.setJavaName(CoreUtils.toUpperFirstCase(replaceFirst));
             }
-
+            tableDefinition.setTableMappingName(CoreUtils.camelToUnderLine(tableDefinition.getObjectName()));
             try {
                 //创建Entity
-                File file = new File(config.getEntityOutPath(),
-                        config.getEntityPackage().replaceAll("\\.", "/")
-                                + "/"
-                                + entityDefinition.getClassName()
-                                + config.getEntitySuffix()
-                                + ".java");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                Writer out = new FileWriter(file);
-                Map<String, Object> data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                entityTemplate.process(data, out);
+                File file = new File(config.getEntityOutPath(), config.getEntityPackage().replaceAll("\\.", "/") + "/" + tableDefinition.getClassName() + config.getEntitySuffix() + ".java");
+                doExecute(config, tableDefinition, entityTemplate, file);
                 //创建controller
-                file = new File(config.getControllerOutPath(),
-                        config.getControllerPackage().replaceAll("\\.", "/")
-                                + "/"
-                                + entityDefinition.getClassName()
-                                + config.getControllerSuffix()
-                                + ".java");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                out = new FileWriter(file);
-                data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                controllerTemplate.process(data, out);
+                file = new File(config.getControllerOutPath(), config.getControllerPackage().replaceAll("\\.", "/") + "/" + tableDefinition.getClassName() + config.getControllerSuffix() + ".java");
+                doExecute(config, tableDefinition, controllerTemplate, file);
                 //创建service
-                file = new File(config.getServiceOutPath(),
-                        config.getServicePackage().replaceAll("\\.", "/")
-                                + "/"
-                                + entityDefinition.getClassName()
-                                + config.getServiceSuffix()
-                                + ".java");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                out = new FileWriter(file);
-                data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                serviceTemplate.process(data, out);
+                file = new File(config.getServiceOutPath(), config.getServicePackage().replaceAll("\\.", "/") + "/" + tableDefinition.getClassName() + config.getServiceSuffix() + ".java");
+                doExecute(config, tableDefinition, serviceTemplate, file);
                 //创建serviceImpl
-                file = new File(config.getServiceImplOutPath(),
-                        config.getServiceImplPackage().replaceAll("\\.", "/")
-                                + "/"
-                                + entityDefinition.getClassName()
-                                + config.getServiceImplSuffix()
-                                + ".java");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                out = new FileWriter(file);
-                data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                serviceImplTemplate.process(data, out);
+                file = new File(config.getServiceImplOutPath(), config.getServiceImplPackage().replaceAll("\\.", "/") + "/" + tableDefinition.getClassName() + config.getServiceImplSuffix() + ".java");
+                doExecute(config, tableDefinition, serviceImplTemplate, file);
                 //创建mapper
-                file = new File(config.getMapperOutPath(),
-                        config.getMapperPackage().replaceAll("\\.", "/")
-                                + "/"
-                                + entityDefinition.getClassName()
-                                + config.getMapperSuffix()
-                                + ".java");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                out = new FileWriter(file);
-                data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                mapperTemplate.process(data, out);
+                file = new File(config.getMapperOutPath(), config.getMapperPackage().replaceAll("\\.", "/") + "/" + tableDefinition.getClassName() + config.getMapperSuffix() + ".java");
+                doExecute(config, tableDefinition, mapperTemplate, file);
                 //创建mapper.xml
-                file = new File(config.getMapperXmlOutPath(),
-                        entityDefinition.getClassName()
-                                + config.getMapperSuffix()
-                                + ".xml");
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-
-                out = new FileWriter(file);
-                data = new HashMap<>();
-                data.put("config", config);
-                data.put("data", entityDefinition);
-                mapperXmlTemplate.process(data, out);
+                file = new File(config.getMapperXmlOutPath(), tableDefinition.getClassName() + config.getMapperSuffix() + ".xml");
+                doExecute(config, tableDefinition, mapperXmlTemplate, file);
             } catch (IOException | TemplateException e) {
                 e.printStackTrace();
             }
         });
+        log.info("======执行完成======");
+    }
 
+    /**
+     * 执行创建
+     */
+    private void doExecute(Config config, TableDefinition tableDefinition, Template template, File file) throws IOException, TemplateException {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        Writer out = new FileWriter(file);
+        Map<String, Object> data = new HashMap<>();
+        data.put("config", config);
+        data.put("data", tableDefinition);
+        template.process(data, out);
+        log.info("文件[" + file.getName() + "]创建成功");
     }
 }

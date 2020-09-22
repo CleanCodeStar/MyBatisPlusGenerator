@@ -39,12 +39,12 @@ public class Config {
     /**
      * entity包名
      */
-    private String entityPackage;
+    private String entityPackage="default.entity";
 
     /**
      * entity输出目录
      */
-    private String entityOutPath;
+    private String entityOutPath=System.getProperty("user.dir");
 
     /**
      * entity后缀
@@ -54,7 +54,7 @@ public class Config {
     /**
      * controller包名
      */
-    private String controllerPackage;
+    private String controllerPackage="default.controller";
 
     /**
      * controller后缀
@@ -64,12 +64,12 @@ public class Config {
     /**
      * controller输出目录
      */
-    private String controllerOutPath;
+    private String controllerOutPath=System.getProperty("user.dir");
 
     /**
      * service包名
      */
-    private String servicePackage;
+    private String servicePackage="default.service";
 
     /**
      * service后缀
@@ -79,12 +79,12 @@ public class Config {
     /**
      * service输出目录
      */
-    private String serviceOutPath;
+    private String serviceOutPath=System.getProperty("user.dir");
 
     /**
      * serviceImpl包名
      */
-    private String serviceImplPackage;
+    private String serviceImplPackage="default.service.impl";
 
     /**
      * serviceImpl后缀
@@ -94,12 +94,12 @@ public class Config {
     /**
      * serviceImp输出目录
      */
-    private String serviceImplOutPath;
+    private String serviceImplOutPath=System.getProperty("user.dir");
 
     /**
      * mapper包名
      */
-    private String mapperPackage;
+    private String mapperPackage="default.mapper";
 
     /**
      * mapper后缀
@@ -109,11 +109,41 @@ public class Config {
     /**
      * mapper输出目录
      */
-    private String mapperOutPath;
+    private String mapperOutPath=System.getProperty("user.dir");
 
     /**
      * mapperXml输出目录
      */
-    private String mapperXmlOutPath;
+    private String mapperXmlOutPath=System.getProperty("user.dir")+"/mapper";
+
+    /**
+     * 自定义entity模板全路径
+     */
+    private String entityTemplatePath;
+
+    /**
+     * 自定义controller模板全路径
+     */
+    private String controllerTemplatePath;
+
+    /**
+     * 自定义service模板全路径
+     */
+    private String serviceTemplatePath;
+
+    /**
+     * 自定义serviceImp模板全路径
+     */
+    private String serviceImplTemplatePath;
+
+    /**
+     * 自定义mapper模板全路径
+     */
+    private String mapperTemplatePath;
+
+    /**
+     * 自定义mapperXml模板全路径
+     */
+    private String mapperXmlTemplatePath;
 
 }
