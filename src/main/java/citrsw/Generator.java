@@ -29,8 +29,7 @@ public class Generator {
     public static void main(String[] args) throws IOException{
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setSourceType("mysql").setSourceUrl("jdbc:mysql://192.168.66.102:3306/citrsw?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
-                .setSourceUser("root").setSourcePassword("cleancode").setSourceSchema("");
-        dataSourceConfig.setSourceDriver("com.mysql.cj.jdbc.Driver");
+                .setSourceUser("root").setSourcePassword("cleancode").setSourceSchema("").setSourceDriver("com.mysql.cj.jdbc.Driver");
         DataBase dataBase = DataBase.INSTANCE;
         dataBase.createDataSourceConnect(dataSourceConfig);
         //注册表
