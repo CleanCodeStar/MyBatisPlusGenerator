@@ -2,6 +2,8 @@
 1. 一次生成entity,controller,service,serviceImpl,mapper,mapper.xml文件，省去做无意义的体力活
 2. 简化到最精简配置，使用方便，配置简单
 3. 同时生成常用的保存，修改，删除，分页查询方法
+### 支持的数据库
+   MySql、SqlServer、PostgreSQL、Oracle
 ### 使用方法
 1. 配置
 
