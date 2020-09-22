@@ -34,12 +34,6 @@ public class Result<T> implements Serializable {
     /**
      * 不允许直接创建
      */
-    private Result() {
-    }
-
-    /**
-     * 不允许直接创建
-     */
     private Result(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
