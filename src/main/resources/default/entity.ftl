@@ -1,5 +1,9 @@
 package ${config.entityPackage};
 
+<@if config.enableApi??>
+import com.citrsw.annatation.ApiModel;
+import com.citrsw.annatation.ApiProperty;
+</@if>
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -24,6 +28,9 @@ import java.io.Serializable;
 @TableName("${data.tableName}")
 @Accessors(chain = true)
 @Data
+<@if config.enableApi??>
+@ApiModel("${data.tableRemark}")
+</@if>
 public class ${data.className}${config.entitySuffix} implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +39,9 @@ public class ${data.className}${config.entitySuffix} implements Serializable {
     /**
     * ${fieldDefinition.columnRemark}
     */
+    <@if config.enableApi??>
+    @ApiProperty(description = "${fieldDefinition.columnRemark}")
+    </@if>
     private ${fieldDefinition.javaFieldClass.simpleName} ${fieldDefinition.javaFieldName};
     </#list>
 }

@@ -33,26 +33,27 @@ public class Generator {
         //配置数据库
         DataSourceConfig dataSourceConfig = new DataSourceConfig().setSourceType("mysql")
                 .setSourceSchema("").setSourceDriver("com.mysql.cj.jdbc.Driver")
-                .setSourceUrl("jdbc:mysql://192.168.66.102:3306/citrsw?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
-                .setSourceUser("root").setSourcePassword("cleancode");
+                .setSourceUrl("jdbc:mysql://39.105.50.107:3306/api-example?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
+                .setSourceUser("cleancode").setSourcePassword("QBg2@YdB^CQWlAg*yStG45oui#*pG#");
         //配置作者、版本号、需要替换的类文件前缀、包名，包后缀名，输出路径,自定义模板路径
         Config config = new Config()
                 .setAuthor("Zhenfeng Li")
                 .setVersion("1.0.0")
                 .setReplace("Tb:")
-                .setEntityPackage("cn.citrsw.entity").setEntityOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setControllerPackage("cn.citrsw.controller").setControllerOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setServicePackage("cn.citrsw.service").setServiceOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setServiceImplPackage("cn.citrsw.service.impl").setServiceImplOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setMapperPackage("cn.citrsw.mapper").setMapperOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
-                .setMapperXmlOutPath("E:\\ideaProjects\\citrsw\\src\\main\\resources\\test\\mapper")
-                //模板可进行自定义，不配置则使用默认
-                .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
-                .setControllerTemplatePath("D:\\Users\\15706\\Desktop\\template\\controller.ftl")
-                .setServiceTemplatePath("D:\\Users\\15706\\Desktop\\template\\service.ftl")
-                .setServiceImplTemplatePath("D:\\Users\\15706\\Desktop\\template\\serviceImpl.ftl")
-                .setMapperTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapper1.ftl")
-                .setMapperXmlTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapperXML.ftl");
+                .setEntityPackage("com.citrsw.apiexample.entity").setEntityOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
+                .setControllerPackage("com.citrsw.apiexample.controller").setControllerOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
+                .setServicePackage("com.citrsw.apiexample.service").setServiceOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
+                .setServiceImplPackage("com.citrsw.apiexample.service.impl").setServiceImplOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
+                .setMapperPackage("com.citrsw.apiexample.mapper").setMapperOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
+                .setMapperXmlOutPath("E:\\ideaProjects\\api-example\\src\\main\\resources\\mapper");
+
+//                //模板可进行自定义，不配置则使用默认
+//                .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
+//                .setControllerTemplatePath("D:\\Users\\15706\\Desktop\\template\\controller.ftl")
+//                .setServiceTemplatePath("D:\\Users\\15706\\Desktop\\template\\service.ftl")
+//                .setServiceImplTemplatePath("D:\\Users\\15706\\Desktop\\template\\serviceImpl.ftl")
+//                .setMapperTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapper1.ftl")
+//                .setMapperXmlTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapperXML.ftl");
         //运行
         //第一种：最全的配置方式
         new Generator().execute(dataSourceConfig, config);

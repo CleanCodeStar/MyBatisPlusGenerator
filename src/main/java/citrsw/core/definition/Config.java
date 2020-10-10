@@ -2,6 +2,7 @@ package citrsw.core.definition;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
+@Slf4j
 public class Config {
 
     /**
@@ -39,12 +41,12 @@ public class Config {
     /**
      * entity包名
      */
-    private String entityPackage="default.entity";
+    private String entityPackage = "default.entity";
 
     /**
      * entity输出目录
      */
-    private String entityOutPath=System.getProperty("user.dir");
+    private String entityOutPath = System.getProperty("user.dir");
 
     /**
      * entity后缀
@@ -54,7 +56,7 @@ public class Config {
     /**
      * controller包名
      */
-    private String controllerPackage="default.controller";
+    private String controllerPackage = "default.controller";
 
     /**
      * controller后缀
@@ -64,12 +66,12 @@ public class Config {
     /**
      * controller输出目录
      */
-    private String controllerOutPath=System.getProperty("user.dir");
+    private String controllerOutPath = System.getProperty("user.dir");
 
     /**
      * service包名
      */
-    private String servicePackage="default.service";
+    private String servicePackage = "default.service";
 
     /**
      * service后缀
@@ -79,12 +81,12 @@ public class Config {
     /**
      * service输出目录
      */
-    private String serviceOutPath=System.getProperty("user.dir");
+    private String serviceOutPath = System.getProperty("user.dir");
 
     /**
      * serviceImpl包名
      */
-    private String serviceImplPackage="default.service.impl";
+    private String serviceImplPackage = "default.service.impl";
 
     /**
      * serviceImpl后缀
@@ -94,12 +96,12 @@ public class Config {
     /**
      * serviceImp输出目录
      */
-    private String serviceImplOutPath=System.getProperty("user.dir");
+    private String serviceImplOutPath = System.getProperty("user.dir");
 
     /**
      * mapper包名
      */
-    private String mapperPackage="default.mapper";
+    private String mapperPackage = "default.mapper";
 
     /**
      * mapper后缀
@@ -109,12 +111,12 @@ public class Config {
     /**
      * mapper输出目录
      */
-    private String mapperOutPath=System.getProperty("user.dir");
+    private String mapperOutPath = System.getProperty("user.dir");
 
     /**
      * mapperXml输出目录
      */
-    private String mapperXmlOutPath=System.getProperty("user.dir")+"/mapper";
+    private String mapperXmlOutPath = System.getProperty("user.dir") + "/mapper";
 
     /**
      * 自定义entity模板全路径
@@ -145,5 +147,8 @@ public class Config {
      * 自定义mapperXml模板全路径
      */
     private String mapperXmlTemplatePath;
-
+    /**
+     * 激活集成JavaApiDocs
+     */
+    private boolean enableApi = false;
 }
