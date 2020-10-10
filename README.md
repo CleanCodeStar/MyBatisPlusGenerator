@@ -29,6 +29,8 @@
                         .setServiceImplPackage("cn.citrsw.service.impl").setServiceImplOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                         .setMapperPackage("cn.citrsw.mapper").setMapperOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                         .setMapperXmlOutPath("E:\\ideaProjects\\citrsw\\src\\main\\resources\\test\\mapper")
+                        //集成JavaApiDocs 默认false
+                        .setEnableApi(true)
             		    //模板可进行自定义，不配置则使用默认
                         .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
                         .setControllerTemplatePath("D:\\Users\\15706\\Desktop\\template\\controller.ftl")
@@ -72,6 +74,8 @@
                .setServiceImplPackage("cn.citrsw.service.impl").setServiceImplOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                .setMapperPackage("cn.citrsw.mapper").setMapperOutPath("E:\\ideaProjects\\citrsw\\src\\main\\java")
                .setMapperXmlOutPath("E:\\ideaProjects\\citrsw\\src\\main\\resources\\test\\mapper")
+               //集成JavaApiDocs 默认false
+               .setEnableApi(true)
                //模板可进行自定义，不配置则使用默认
                .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
                .setControllerTemplatePath("D:\\Users\\15706\\Desktop\\template\\controller.ftl")

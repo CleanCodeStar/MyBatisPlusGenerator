@@ -45,7 +45,8 @@ public class Generator {
                 .setServicePackage("com.citrsw.apiexample.service").setServiceOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
                 .setServiceImplPackage("com.citrsw.apiexample.service.impl").setServiceImplOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
                 .setMapperPackage("com.citrsw.apiexample.mapper").setMapperOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setMapperXmlOutPath("E:\\ideaProjects\\api-example\\src\\main\\resources\\mapper");
+                .setMapperXmlOutPath("E:\\ideaProjects\\api-example\\src\\main\\resources\\mapper")
+                .setEnableApi(true);
 
 //                //模板可进行自定义，不配置则使用默认
 //                .setEntityTemplatePath("D:\\Users\\15706\\Desktop\\template\\entity.ftl")
