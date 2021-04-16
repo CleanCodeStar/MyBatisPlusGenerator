@@ -1,9 +1,9 @@
 package ${config.entityPackage};
 
-<@if config.enableApi??>
+<#if config.enableApi??>
 import com.citrsw.annatation.ApiModel;
 import com.citrsw.annatation.ApiProperty;
-</@if>
+</#if>
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,33 +15,33 @@ import java.io.Serializable;
 
 
 /**
-* ${data.tableRemark}
-*
+ * ${data.tableRemark}
+ *
 <#if config.author??>
-* @author ${config.author}
+ * @author ${config.author}
 </#if>
 <#if config.author??>
-* @version ${config.version}
+ * @version ${config.version}
 </#if>
-* @date ${config.createTime?string('yyyy-MM-dd hh:mm:ss')}
-*/
+ * @date ${config.createTime?string('yyyy-MM-dd hh:mm:ss')}
+ */
 @TableName("${data.tableName}")
 @Accessors(chain = true)
 @Data
-<@if config.enableApi??>
+<#if config.enableApi??>
 @ApiModel("${data.tableRemark}")
-</@if>
+</#if>
 public class ${data.className}${config.entitySuffix} implements Serializable {
 
     private static final long serialVersionUID = 1L;
     <#list data.allFieldDefinitions as fieldDefinition>
 
     /**
-    * ${fieldDefinition.columnRemark}
-    */
-    <@if config.enableApi??>
+     * ${fieldDefinition.columnRemark}
+     */
+    <#if config.enableApi??>
     @ApiProperty(description = "${fieldDefinition.columnRemark}")
-    </@if>
+    </#if>
     private ${fieldDefinition.javaFieldClass.simpleName} ${fieldDefinition.javaFieldName};
     </#list>
 }

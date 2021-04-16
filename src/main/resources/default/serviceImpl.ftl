@@ -8,12 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
-* ${data.tableRemark}${config.serviceImplSuffix}
-*
-* @author Zhenfeng Li
-* @version 0.0.1
-* @date 2020-04-01 08:04:05
-*/
+ * ${data.tableRemark}${config.serviceImplSuffix}
+ *
+ * @author Zhenfeng Li
+ * @version 0.0.1
+ * @date 2020-04-01 08:04:05
+ */
 @Service
 @Slf4j
 public class ${data.className}${config.serviceImplSuffix} extends ServiceImpl<${data.className}${config.mapperSuffix},${data.className}${config.entitySuffix}> implements  ${data.className}${config.serviceSuffix} {

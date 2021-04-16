@@ -11,7 +11,9 @@
         </#list>
     </resultMap>
     <sql id="column_List" >
-        <#list data.allFieldDefinitions as fieldDefinition>${fieldDefinition.columnName}<#if fieldDefinition_has_next>,</#if></#list>
+        <!--@sql select -->
+        <#list data.allFieldDefinitions as fieldDefinition>${fieldDefinition.columnName}<#if fieldDefinition_has_next>, </#if></#list>
+        <!--@sql from ${data.tableName}-->
     </sql>
 
 </mapper>

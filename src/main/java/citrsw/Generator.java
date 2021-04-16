@@ -15,6 +15,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +37,21 @@ public class Generator {
         //配置数据库
         DataSourceConfig dataSourceConfig = new DataSourceConfig().setSourceType("mysql")
                 .setSourceSchema("").setSourceDriver("com.mysql.cj.jdbc.Driver")
-                .setSourceUrl("jdbc:mysql://39.105.50.107:3306/api-example?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
-                .setSourceUser("cleancode").setSourcePassword("QBg2@YdB^CQWlAg*yStG45oui#*pG#");
+                .setSourceUrl("jdbc:mysql://127.0.0.1:3306/xfd?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
+//                .setSourceUrl("jdbc:mysql://101.132.156.127:3306/xfd?charset=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true")
+                .setSourceUser("root").setSourcePassword("m9pR^XFZEf!0hz9H");
+//                .setSourceUser("xfd").setSourcePassword(".Qq123456");
         //配置作者、版本号、需要替换的类文件前缀、包名，包后缀名，输出路径,自定义模板路径
         Config config = new Config()
                 .setAuthor("Zhenfeng Li")
                 .setVersion("1.0.0")
-                .setReplace("Tb:")
-                .setEntityPackage("com.citrsw.apiexample.entity").setEntityOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setControllerPackage("com.citrsw.apiexample.controller").setControllerOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setServicePackage("com.citrsw.apiexample.service").setServiceOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setServiceImplPackage("com.citrsw.apiexample.service.impl").setServiceImplOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setMapperPackage("com.citrsw.apiexample.mapper").setMapperOutPath("E:\\ideaProjects\\api-example\\src\\main\\java")
-                .setMapperXmlOutPath("E:\\ideaProjects\\api-example\\src\\main\\resources\\mapper")
+                .setReplace("T:")
+                .setEntityPackage("com.shangqi.xfd.entity").setEntityOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\java")
+                .setControllerPackage("com.shangqi.xfd.controller").setControllerOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\java")
+                .setServicePackage("com.shangqi.xfd.service").setServiceOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\java")
+                .setServiceImplPackage("com.shangqi.xfd.service.impl").setServiceImplOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\java")
+                .setMapperPackage("com.shangqi.xfd.mapper").setMapperOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\java")
+                .setMapperXmlOutPath("E:\\ideaProjects\\taoru\\xfd-client-service\\src\\main\\resources\\mapper")
                 .setEnableApi(true);
 
 //                //模板可进行自定义，不配置则使用默认
@@ -55,9 +61,72 @@ public class Generator {
 //                .setServiceImplTemplatePath("D:\\Users\\15706\\Desktop\\template\\serviceImpl.ftl")
 //                .setMapperTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapper1.ftl")
 //                .setMapperXmlTemplatePath("D:\\Users\\15706\\Desktop\\template\\mapperXML.ftl");
+        List<String> tablesName = new ArrayList<>();
+
+        tablesName.add("t_coupon_record");
+//        tablesName.add("t_activity_bargaining");
+//        tablesName.add("t_activity_bargaining_img");
+//        tablesName.add("t_activity_bargaining_order");
+//        tablesName.add("t_activity_bargaining_record");
+//        tablesName.add("t_activity_bargaining_task");
+//        tablesName.add("t_activity_dzp");
+//        tablesName.add("t_activity_dzp_record");
+//        tablesName.add("t_activity_dzp_user");
+//        tablesName.add("t_activity_egg_frenzy");
+//        tablesName.add("t_activity_egg_frenzy_prize");
+//        tablesName.add("t_activity_egg_frenzy_record");
+//        tablesName.add("t_activity_fl");
+//        tablesName.add("t_activity_fl_member");
+//        tablesName.add("t_activity_fl_record");
+//        tablesName.add("t_activity_flash_sale");
+//        tablesName.add("t_activity_flash_sale_order");
+//        tablesName.add("t_activity_flash_sale_record");
+//        tablesName.add("t_activity_pt");
+//        tablesName.add("t_activity_pt_record");
+//        tablesName.add("t_activity_pt_user");
+//        tablesName.add("t_activity_red_envelope_fission");
+//        tablesName.add("t_activity_red_envelope_fission_prize");
+//        tablesName.add("t_activity_red_envelope_fission_record");
+//        tablesName.add("t_activity_share_moments");
+//        tablesName.add("t_activity_tj");
+//        tablesName.add("t_activity_tj_record");
+//        tablesName.add("t_activity_yhj");
+//        tablesName.add("t_activity_yhj_record");
+//        tablesName.add("tb_position");
+//        tablesName.add("tb_personnel");
+//        tablesName.add("tb_personnel_role");
+//        tablesName.add("tb_resource");
+//        tablesName.add("tb_role");
+//        tablesName.add("tb_role_resource");
+//        tablesName.add("tb_user");
+//        tablesName.add("tb_type");
+//        tablesName.add("tb_sku");
+//        tablesName.add("tb_shop_coupon");
+//        tablesName.add("tb_shop");
+////        tablesName.add("tb_product");
+//        tablesName.add("tb_personnel_role");
+////        tablesName.add("tb_order_detail");
+////        tablesName.add("tb_order");
+//        tablesName.add("tb_department");
+//        tablesName.add("tb_user_coupon");
+//        tablesName.add("tb_addr");
+//        tablesName.add("tb_warehouse");
+//        tablesName.add("tb_warehouse_detail");
+//        tablesName.add("tb_warehouse_detail_record");
+//        tablesName.add("tb_warehouse_detail_transfer");
+//        tablesName.add("tb_app_index_banner_conf");
+//        tablesName.add("tb_app_start_conf");
+//        tablesName.add("tb_cart");
+//        tablesName.add("tb_coupon_target");
+//        tablesName.add("tb_pay");
+//        tablesName.add("tb_freight_conf");
+//        tablesName.add("tb_sku_detail");
+//        tablesName.add("tb_order_detail_sku_detail");
+//        tablesName.add("tb_return_policy");
+
         //运行
         //第一种：最全的配置方式
-        new Generator().execute(dataSourceConfig, config);
+        new Generator().execute(dataSourceConfig, config, tablesName);
         //第二种：最简单的配置方式，只配置数据库，其他均使用默认配置，该方式会将生成的文件输出到当前工程目录下
         // new Generator().execute(dataSourceConfig);
     }
@@ -65,18 +134,18 @@ public class Generator {
     /**
      * 执行
      */
-    public void execute(DataSourceConfig dataSourceConfig) throws IOException {
-        execute(dataSourceConfig, new Config());
+    public void execute(DataSourceConfig dataSourceConfig, List<String> ignoreTablesName) throws IOException {
+        execute(dataSourceConfig, new Config(), ignoreTablesName);
     }
 
     /**
      * 执行
      */
-    public void execute(DataSourceConfig dataSourceConfig, Config config) throws IOException {
+    public void execute(DataSourceConfig dataSourceConfig, Config config, List<String> ignoreTablesName) throws IOException {
         DataBase dataBase = DataBase.INSTANCE;
         dataBase.createDataSourceConnect(dataSourceConfig);
         //注册表
-        List<TableDefinition> tableDefinitions = dataBase.registerAllTable();
+        List<TableDefinition> tableDefinitions = dataBase.registerAllTable(ignoreTablesName);
         //注册表字段
         tableDefinitions.parallelStream().forEach(dataBase::registerAllColumn);
         log.info("======表注册完成======");
@@ -196,4 +265,5 @@ public class Generator {
         template.process(data, out);
         log.info("文件[" + file.getName() + "]创建成功");
     }
+
 }

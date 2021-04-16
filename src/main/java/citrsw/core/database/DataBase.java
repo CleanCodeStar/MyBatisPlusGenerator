@@ -7,7 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -86,8 +93,10 @@ public class DataBase {
 
     /**
      * 注册所有表
+     *
+     * @param ignoreTablesName
      */
-    public List<TableDefinition> registerAllTable() {
+    public List<TableDefinition> registerAllTable(List<String> ignoreTablesName) {
         List<TableDefinition> tableDefinitions = new ArrayList<>();
         try {
             DatabaseMetaData metaData = getMetaData();
@@ -95,6 +104,10 @@ public class DataBase {
             while (tableSet.next()) {
                 //表名称
                 String tableName = tableSet.getString("TABLE_NAME");
+                if (!ignoreTablesName.contains(tableName)) {
+                    //跳过忽略的表
+                    continue;
+                }
                 //表类型
                 String tableType = tableSet.getString("TABLE_TYPE");
                 //表注释信息
