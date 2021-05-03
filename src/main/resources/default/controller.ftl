@@ -10,9 +10,9 @@ import ${config.servicePackage}.${data.className}Service;
 import com.citrsw.apiexample.common.Result;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-<@if config.enableApi??>
+<#if config.enableApi??>
 import com.citrsw.annatation.*;
-</@if>
+</#if>
 
 /**
 * ${data.tableRemark}${config.serviceSuffix}
@@ -27,9 +27,9 @@ import com.citrsw.annatation.*;
 */
 @RestController
 @Slf4j
-<@if config.enableApi??>
+<#if config.enableApi??>
 @ApiClass(value = "${data.tableRemark}")
-</@if>
+</#if>
 public class ${data.className}${config.controllerSuffix} {
 
     private final ${data.className}${config.serviceSuffix} ${data.objectName}${config.serviceSuffix};
@@ -41,9 +41,9 @@ public class ${data.className}${config.controllerSuffix} {
     /**
     * 保存
     */
-    <@if config.enableApi??>
+    <#if config.enableApi??>
     @ApiMethod("保存")
-    </@if>
+    </#if>
     @PostMapping("/${data.tableMappingName}")
     public Result<Boolean> save(@RequestBody ${data.className}${config.entitySuffix} ${data.objectName}${config.entitySuffix}, HttpSession session) {
         boolean save = ${data.objectName}${config.serviceSuffix}.save(${data.objectName}${config.entitySuffix});
@@ -53,9 +53,9 @@ public class ${data.className}${config.controllerSuffix} {
     /**
     * 根据Id修改
     */
-    <@if config.enableApi??>
+    <#if config.enableApi??>
     @ApiMethod("根据Id修改")
-    </@if>
+    </#if>
     @PutMapping("/${data.tableMappingName}")
     public Result<Boolean> modify(${data.className}${config.entitySuffix} ${data.objectName}${config.entitySuffix}, HttpSession session) {
         boolean modify = ${data.objectName}${config.serviceSuffix}.updateById(${data.objectName}${config.entitySuffix});
@@ -65,9 +65,9 @@ public class ${data.className}${config.controllerSuffix} {
     /**
     * 根据Id删除
     */
-    <@if config.enableApi??>
+    <#if config.enableApi??>
     @ApiMethod("根据Id删除")
-    </@if>
+    </#if>
     @DeleteMapping("/${data.tableMappingName}/{id}")
     public Result<Boolean> delete(@PathVariable Long id, HttpSession session) {
         boolean delete = ${data.objectName}${config.serviceSuffix}.removeById(id);
@@ -77,9 +77,9 @@ public class ${data.className}${config.controllerSuffix} {
     /**
     * 根据条件分页查询
     */
-    <@if config.enableApi??>
+    <#if config.enableApi??>
     @ApiMethod("根据条件分页查询")
-    </@if>
+    </#if>
     @GetMapping("/${data.tableMappingName}/page/all")
     public Result<Page<${data.className}${config.entitySuffix}>> pageAll(${data.className}${config.entitySuffix} ${data.objectName}${config.entitySuffix}, Page<${data.className}${config.entitySuffix}> page) {
         LambdaQueryWrapper<${data.className}${config.entitySuffix}> wrapper = Wrappers.lambdaQuery();
